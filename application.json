@@ -1,0 +1,14 @@
+{
+  "name" : "orm",
+  "version" : "1.0.0",
+  "dependencies" : [
+    {
+      "name" : "db",
+      "version" : "1.0.0"
+    },
+    {
+      "name": "ezcache",
+      "version": "1.0.0"
+    }
+  ]
+}
