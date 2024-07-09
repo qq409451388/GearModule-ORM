@@ -27,6 +27,7 @@ abstract class BaseDAO implements EzBean
          * @var AnnoationElement $annoItem
          */
         $annoItem = AnnoationRule::searchCertainlyRelationshipAnnoation($this->entityClazz->getName(), EntityBind::class);
+        DBC::assertNotEmpty($annoItem, "[DAO] the Class {$this->entityClazz->getName()} must bind Anno ".EntityBind::class);
         if ($annoItem instanceof AnnoationElement) {
             /**
              * @var EntityBind $anno
@@ -69,7 +70,7 @@ abstract class BaseDAO implements EzBean
             return null;
         }
         $className = $this->entityClazz->getName();
-        return EzBeanUtils::createObject($res, $className);
+        return EzObjectUtils::create($res, $className);
     }
 
     /**
@@ -123,7 +124,7 @@ abstract class BaseDAO implements EzBean
         $res = DB::get($this->database)->query($sql, [], SqlOptions::new()->isChunk(true));
         $className = $this->entityClazz->getName();
         foreach ($res as &$item) {
-            $item = EzBeanUtils::createObject($item, $className);
+            $item = EzObjectUtils::create($item, $className);
         }
         return $res;
     }
@@ -151,7 +152,7 @@ abstract class BaseDAO implements EzBean
             $res = DB::get($this->database)->query($sql, $params);
             $className = $this->entityClazz->getName();
             foreach ($res as &$item) {
-                $item = EzBeanUtils::createObject($item, $className);
+                $item = EzObjectUtils::create($item, $className);
             }
             return $res;
         }
@@ -174,7 +175,7 @@ abstract class BaseDAO implements EzBean
             }
             $className = $this->entityClazz->getName();
             foreach ($res as &$item) {
-                $item = EzBeanUtils::createObject($item, $className);
+                $item = EzObjectUtils::create($item, $className);
             }
             return $res;
         }
@@ -224,15 +225,19 @@ abstract class BaseDAO implements EzBean
              */
             $idClient = BeanFinder::get()->pull($annoItme->value);
             $domain->id = $idClient->nextId();
+
+            $domainArr = $domain->toArray();
         }
         if ($domain instanceof BaseDO) {
             $domain->ver = 1;
-            $date = EzDate::now();
+            $date = new EzDate();
             $domain->createTime = $date;
             $domain->updateTime = $date;
+            $domainArr = $domain->toArray();
+            unset($domainArr["id"]);
         }
         $splitColumn = $this->splitColumn;
-        return DB::get($this->database)->save($this->getTable($domain->$splitColumn ?? null), $domain->toArray());
+        return DB::get($this->database)->save($this->getTable($domain->$splitColumn ?? null), $domainArr);
     }
 
     public function update(AbstractDO $domain) {
@@ -243,7 +248,7 @@ abstract class BaseDAO implements EzBean
         if ($domain instanceof BaseDO) {
             $ver = $domain->ver;
             $domain->ver++;
-            $domain->updateTime = EzDate::now();
+            $domain->updateTime = new EzDate();
             $updateRes = DB::get($this->database)->update($this->getTable($domain->$splitColumn ?? null), $domain->toArray(), "id", "ver = $ver");
         } else {
             $updateRes = DB::get($this->database)->update($this->getTable($domain->$splitColumn ?? null), $domain->toArray(), "id");
@@ -294,7 +299,7 @@ abstract class BaseDAO implements EzBean
             }
             $className = $this->entityClazz->getName();
             foreach ($res as &$item) {
-                $item = EzBeanUtils::createObject($item, $className);
+                $item = EzObjectUtils::create($item, $className);
             }
             return $res;
         }

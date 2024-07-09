@@ -27,6 +27,6 @@ abstract class BaseDO extends AbstractDO
     public function __construct() {
         parent::__construct();
         $this->ver = 1;
-        $this->createTime = $this->updateTime = EzDate::now();
+        $this->createTime = $this->updateTime;
     }
 }
