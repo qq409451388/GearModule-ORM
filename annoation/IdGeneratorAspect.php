@@ -1,4 +1,5 @@
 <?php
+
 class IdGeneratorAspect extends Aspect implements BuildAspect
 {
 

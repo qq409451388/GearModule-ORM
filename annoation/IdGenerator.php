@@ -1,4 +1,5 @@
 <?php
+
 class IdGenerator extends Anno
 {
     /**
