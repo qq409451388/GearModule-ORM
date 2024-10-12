@@ -1,6 +1,6 @@
 <?php
 
-abstract class BaseDAO implements EzBean
+abstract class BaseDAO
 {
     /**
      * @var Clazz $entityClazz
@@ -83,8 +83,8 @@ abstract class BaseDAO implements EzBean
          * @var EzLocalCache $localCache
          */
         $localCache = CacheFactory::getInstance(CacheFactory::TYPE_MEM);
-        if(null != $localCache && $data = $localCache->get($this->entityClazz->getName().$id)){
-            return unserialize($data);
+        if(null != $localCache && $data = $localCache->getSource($this->entityClazz->getName().$id)){
+            return $data;
         }
         $params = [":id" => $id];
         if ($this->hasSplit) {
@@ -96,7 +96,7 @@ abstract class BaseDAO implements EzBean
         if(empty($data)){
             return null;
         }
-        null != $localCache && $localCache->set($this->entityClazz->getName().$id, serialize($data));
+        null != $localCache && $localCache->putSource($this->entityClazz->getName().$id, $data);
         return $data;
     }
 

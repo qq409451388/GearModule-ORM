@@ -29,4 +29,17 @@ abstract class BaseDO extends AbstractDO
         $this->ver = 1;
         $this->createTime = $this->updateTime;
     }
+
+    public function toString()
+    {
+        return EzObjectUtils::toString($this);
+    }
+
+    public function toJson() {
+        return EzCodecUtils::encodeJson($this);
+    }
+
+    public function format(&$data) {
+        return $this;
+    }
 }
