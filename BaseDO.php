@@ -2,10 +2,6 @@
 
 abstract class BaseDO extends AbstractDO
 {
-    /**
-     * @Alias("id")
-     */
-    public $id;
 
     /**
      * @Alias("ver")

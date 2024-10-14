@@ -1,9 +1,11 @@
 <?php
-class DynamicDAO extends BaseDAO
+class DynamicDAO
 {
+    use BaseDAOTrait;
+
     public function __construct($className) {
         $this->entityClazz = Clazz::get($className);
-        parent::__construct();
+        $this->init();
     }
     public static function getInstance($className) {
         return new DynamicDAO($className);
