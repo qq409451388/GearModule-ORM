@@ -8,6 +8,5 @@ class UnitOfWork implements EzComponent
     }
 
     public function commit() {
-        foreach ($this->entityManager->)
     }
 }

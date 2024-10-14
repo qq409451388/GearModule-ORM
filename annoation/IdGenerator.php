@@ -1,6 +1,6 @@
 <?php
 
-class IdGenerator extends Anno
+class IdGenerator extends BuildAnnotation
 {
     /**
      * @var Clazz<EzIdClient>
@@ -15,22 +15,17 @@ class IdGenerator extends Anno
         $this->clazz = Clazz::get($values['idClient']);
     }
 
-    public static function constTarget()
+    public function constTarget()
     {
         return AnnoElementType::TYPE_CLASS;
     }
 
-    public static function constPolicy()
-    {
-        return AnnoPolicyEnum::POLICY_BUILD;
-    }
-
-    public static function constStruct()
+    public function constStruct()
     {
         return AnnoValueTypeEnum::TYPE_RELATION;
     }
 
-    public static function constAspect()
+    public function constAspect()
     {
         return IdGeneratorAspect::class;
     }

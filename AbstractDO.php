@@ -7,7 +7,7 @@ abstract class AbstractDO implements EzDataObject, EzIgnoreUnknow
 
     public function toArray(){
         $ezReflectionClass = new EzReflectionClass($this);
-        $annoList = $ezReflectionClass->getPropertyAnnotationList(Clazz::get(ColumnAlias::class));
+        $annoList = $ezReflectionClass->getPropertyAnnotationList(Clazz::get(Alias::class));
         $array = get_object_vars($this);
         foreach ($array as $k => $item) {
             if ($item instanceof EzSerializeDataObject) {

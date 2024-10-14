@@ -3,24 +3,24 @@
 abstract class BaseDO extends AbstractDO
 {
     /**
-     * @ColumnAlias("id")
+     * @Alias("id")
      */
     public $id;
 
     /**
-     * @ColumnAlias("ver")
+     * @Alias("ver")
      */
     public $ver;
 
     /**
      * @var EzDate $createTime
-     * @ColumnAlias("create_time")
+     * @Alias("create_time")
      */
     public $createTime;
 
     /**
      * @var EzDate $updateTime
-     * @ColumnAlias("update_time")
+     * @Alias("update_time")
      */
     public $updateTime;
 

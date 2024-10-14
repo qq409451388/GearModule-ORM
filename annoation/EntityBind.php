@@ -3,7 +3,7 @@
 /**
  * degign for Object ? extends BaseDO
  */
-class EntityBind extends Anno
+class EntityBind extends RuntimeAnnotation
 {
     protected $table;
     protected $db;
@@ -16,23 +16,13 @@ class EntityBind extends Anno
         return $this->db;
     }
 
-    public static function constTarget()
+    public function constTarget()
     {
         return AnnoElementType::TYPE_CLASS;
     }
 
-    public static function constPolicy()
-    {
-        return AnnoPolicyEnum::POLICY_BUILD;
-    }
-
-    public static function constStruct()
+    public function constStruct()
     {
         return AnnoValueTypeEnum::TYPE_RELATION;
-    }
-
-    public static function constAspect()
-    {
-        return null;
     }
 }

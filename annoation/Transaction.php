@@ -1,37 +1,30 @@
 <?php
 
-class Transaction extends Anno
+class Transaction extends BuildAnnotation
 {
 
     /**
      * 指定注解可以放置的位置（默认: 所有）@see AnnoElementType
      */
-    public static function constTarget()
+    public function constTarget()
     {
         return AnnoElementType::TYPE_METHOD;
     }
 
     /**
-     * 指定注解的执行模式 @see AnnoPolicyEnum
-     */
-    public static function constPolicy()
-    {
-        return AnnoPolicyEnum::POLICY_ACTIVE;
-    }
-
-    /**
      * 指定注解的value设置规则 @see AnnoValueTypeEnum
      */
-    public static function constStruct()
+    public function constStruct()
     {
         return AnnoValueTypeEnum::TYPE_LITE;
     }
 
     /**
+     * todo
      * 非必须，切面逻辑类名，触发此注解时，执行的逻辑 @return Aspect|null
      * @example {@see DiAspect}
      */
-    public static function constAspect()
+    public function constAspect()
     {
         return null;
     }
