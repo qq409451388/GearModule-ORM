@@ -7,11 +7,18 @@ class UnitOfWork implements EzBean
      */
     public $entityManager;
 
+    public function __destruct() {
+        Logger::info("UnitOfWork committing transaction...");
+        $this->commit();
+    }
+
     public function commit() {
         $saveOrUpdateList = [];
         try {
             $ormLocalCacheSpace = $this->entityManager->getSource(OrmConst::KEY_LOCALCACHE_ORM);
+            $ormLocalCacheSpace = empty($ormLocalCacheSpace) ? [] : $ormLocalCacheSpace;
             $ormLocalCacheSpace2 = $this->entityManager->getSource(OrmConst::KEY_LOCALCACHE_ORM_NEW);
+            $ormLocalCacheSpace2 = empty($ormLocalCacheSpace2) ? [] : $ormLocalCacheSpace2;
             /**
              * @var array<AbstractDO> $entityList
              */
@@ -33,7 +40,7 @@ class UnitOfWork implements EzBean
                     $saveOrUpdateList[$entityName]['save'][] = $entity;
                 }
             }
-            $dbIns = DB::get(Config::get("application.datasource.database"));
+            $dbIns = DB::get(Config::get("application.datasource.mysql.database"));
             $dbIns->startTransaction();
             foreach ($saveOrUpdateList as $entityName => $entityGroupList) {
                 $dynamicDao = DynamicDAO::getInstance($entityName);
@@ -45,8 +52,11 @@ class UnitOfWork implements EzBean
                 $dynamicDao->batchDeleteByIds(array_column($deleteGroup, 'id'));
             }
             $dbIns->commit();
+            Logger::info("UnitOfWork commit transaction succeed!");
         } catch (\Exception $e) {
-            $dbIns->rollBack();
+            if ($dbIns instanceof IDbSe) {
+                $dbIns->rollBack();
+            }
         }
     }
 }

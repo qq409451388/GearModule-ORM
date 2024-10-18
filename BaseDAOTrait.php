@@ -52,6 +52,11 @@ trait BaseDAOTrait
             $this->splitModel = $anno->getSplitModel();
             $this->hasSplit = true;
         }
+        if (empty($this->database)) {
+            $this->database = Config::get("application.datasource.mysql.database", "");
+        }
+        DBC::assertNotEmpty($this->table, "[DAO] create Fail! Unselect table.", 0, GearShutDownException::class);
+        DBC::assertNotEmpty($this->database, "[DAO] create Fail! Unselect database.", 0, GearShutDownException::class);
     }
 
     /**
