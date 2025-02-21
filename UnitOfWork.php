@@ -14,6 +14,7 @@ class UnitOfWork implements EzBean
 
     public function commit() {
         $saveOrUpdateList = [];
+        $dbIns = null;
         try {
             $ormLocalCacheSpace = $this->entityManager->getSource(OrmConst::KEY_LOCALCACHE_ORM);
             $ormLocalCacheSpace = empty($ormLocalCacheSpace) ? [] : $ormLocalCacheSpace;
@@ -53,7 +54,7 @@ class UnitOfWork implements EzBean
             }
             $dbIns->commit();
             Logger::info("UnitOfWork commit transaction succeed!");
-        } catch (\Exception $e) {
+        } catch (\Exception | Error $e) {
             if ($dbIns instanceof IDbSe) {
                 $dbIns->rollBack();
             }
